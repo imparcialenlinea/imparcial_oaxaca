@@ -1,0 +1,241 @@
+<?php 
+
+if ( ! defined( 'ABSPATH' ) ) {
+
+  die( '-1' );
+
+}
+
+    $today = getdate();
+    $yday =  getdate( $today[0] -86400 );
+/**
+
+ * Shortcode attributes
+
+ * @var $atts
+ * @var $grupo_slug 
+ * @var $this WPBakeryShortCode_qk_team
+
+ */
+
+$atts = vc_map_get_attributes( $this->getShortcode(), $atts );
+extract( $atts );
+$custom  = hotmagazine_custom();
+
+
+// This is where you run the code and display the output
+$queryhoy = array(	
+	'posts_per_page' =>1,
+	'post_type' => 'casoscovid',
+	'post_status' => 'publish',
+	'offset' => 0,
+	
+);
+
+
+$items = new WP_Query($queryhoy);
+$items->the_post();
+	$activoshoy=rwmb_meta( 'activos' );
+	$activosNhoy=rwmb_meta( 'activosN' );
+
+
+	$dia=get_the_date('j');	
+	$mes=get_the_date('F');	
+	
+$queryayer = array(	
+	'posts_per_page' =>1,
+	'post_type' => 'casoscovid',
+	'post_status' => 'publish',
+	'offset' => 1,
+
+	
+);
+
+
+$its = new WP_Query($queryayer);
+$its->the_post();
+	$activosayer=rwmb_meta( 'activos' );
+	$activosNayer=rwmb_meta( 'activosN' );
+
+
+$cambio=$activoshoy-$activosayer;
+	if($cambio>=0){
+		$signo='+';
+		$signo2='más';		
+	}else{
+		$signo='';
+		$signo2='menos';			
+	}
+
+	$cambioN=$activosNhoy-$activosNayer;
+	if($cambioN>=0){
+		$signoN='+';
+		$signo2N='más';		
+	}else{
+		$signoN='';
+		$signo2N='menos';			
+	}
+
+?>
+
+
+<style>
+.imgCOVID{
+	width:720px;
+	height:1280px;
+	background-image:url(https://imparcialoaxaca.mx/wp-content/uploads/2020/11/c0c9a88e-bf88-416f-87ec-5fd03c5ca7e0.jpg);
+	border:1px solid #999999;
+}
+.CVcorte{
+top: 305px;
+    left: 390px;
+    font-size: 36px;
+    width: 426px;
+    text-align: left;
+    position: absolute;
+    text-transform: uppercase;
+    color: #ffffff;
+}
+.CVactivoshoy{
+	top: 525px;
+    left: 117px;
+    font-size: 96px;
+    width: 381px;
+    text-align: center;
+    position: absolute;
+    color: #fffc00;
+    font-weight: bolder;
+}
+.CVactivoshoyN{
+top: 940px;
+    left: 117px;
+    font-size: 72px;
+    width: 381px;
+    text-align: center;
+    position: absolute;
+    color: #fffc00;
+    font-weight: bolder;
+}
+
+	.CVsigno{
+	top: 720px;
+    left: 145px;
+    font-size: 36px;
+    width: 472px;
+    text-align: center;
+    position: absolute;
+    color: #ffffff;
+}
+.CVsignoN{
+    top: 1136px;
+    left: 165px;
+    font-size: 28px;
+    width: 420px;
+    text-align: center;
+    position: absolute;
+    color: #ffffff;
+}	
+	
+.CVcambio{
+	top: 660px;
+    left: 187px;
+    font-size: 48px;
+    width: 377px;
+    font-weight: bolder;
+    text-align: center;
+    position: absolute;
+    color: #ffffff;
+}
+.CVcambioN{
+top: 1080px;
+    left: 214px;
+    font-size: 42px;
+    width: 320px;
+    font-weight: bolder;
+    text-align: center;
+    position: absolute;
+    color: #ffffff;
+}	
+
+</style>
+
+    <script src= 
+"https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"> 
+    </script> 
+      
+    <script src= 
+"https://files.codepedia.info/files/uploads/iScripts/html2canvas.js"> 
+    </script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js" integrity="sha512-s/XK4vYVXTGeUSv4bRPOuxSDmDlTedEpMEcAQk0t/FMd9V6ft8iXdwSBxV0eD60c6w/tjotSlKu9J2AAW1ckTA==" crossorigin="anonymous"></script>
+
+
+<div class="imgCOVID" id="html-content-holder">
+	<div class="CVcorte">
+    	<?php echo $dia.' de '.$mes; ?>
+    </div> 	
+	<div class="CVactivoshoy">
+    	<?php echo number_format($activoshoy, 0, '.', ','); ?>
+    </div>    
+	<div class="CVactivoshoyN">
+    	<?php echo number_format($activosNhoy, 0, '.', ','); ?>
+    </div> 
+	<div class="CVcambio">
+    	<?php echo $signo.' '.number_format(abs($cambio), 0, '.', ',').' casos'; ?>
+    </div>    
+	<div class="CVsigno">
+    	<?php echo $signo2.' que el día anterior'; ?>
+    </div> 	
+	<div class="CVcambioN">
+    	<?php echo $signoN.' '.number_format(abs($cambioN), 0, '.', ',').' casos'; ?>
+    </div>    
+	<div class="CVsignoN">
+    	<?php echo $signo2N.' que el día anterior'; ?>
+    </div> 
+	
+</div>
+    <input id="btn-Preview-Image" type="button"
+                value="CREAR IMAGEN" />  
+          
+    <a id="btn-Convert-Html2Image" href="#"> 
+        DESCARGAR 
+    </a> 
+  
+    <br/> 
+      
+    <h3>IMAGEN:</h3> 
+      
+    <div id="previewImage"></div> 
+
+    <script> 
+        $(document).ready(function() { 
+          
+            // Global variable 
+            var element = $("#html-content-holder");  
+          
+            // Global variable 
+            var getCanvas;  
+  
+            $("#btn-Preview-Image").on('click', function() { 
+                html2canvas(element, { 
+                    onrendered: function(canvas) { 
+                        $("#previewImage").append(canvas); 
+                        getCanvas = canvas; 
+                    } 
+                }); 
+            }); 
+  
+            $("#btn-Convert-Html2Image").on('click', function() { 
+                var imgageData =  
+                    getCanvas.toDataURL("image/jpg"); 
+              
+                // Now browser starts downloading  
+                // it instead of just showing it 
+                var newData = imgageData.replace( 
+                /^data:image\/png/, "data:application/octet-stream"); 
+              
+                $("#btn-Convert-Html2Image").attr( 
+                "download", "Covid-19-activos-<?php echo $dia.$mes; ?>.jpg").attr( 
+                "href", newData); 
+            }); 
+        }); 
+    </script> 

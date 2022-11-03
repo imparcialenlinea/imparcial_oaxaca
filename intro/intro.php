@@ -1,0 +1,24 @@
+<?php $custom  = hotmagazine_custom(); ?>
+<?php if($custom['blog_thumbnail']!=false){ ?>
+<?php if(has_post_thumbnail()){ ?>
+	<?php if(false == get_post_format() or has_post_format('aside')){ 
+	$thumbnail_id = get_post_thumbnail_id( $post->ID );
+	$alt = get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true);
+	if($alt==''){$alt=get_the_title().' | El Imparcial de Oaxaca';}
+	$caption = get_post( $thumbnail_id )->post_excerpt;?>
+	<figure id="attachment_<?php echo $thumbnail_id ?>" style="width: 100%" class="wp-caption aligncenter"><img class="size-full wp-image-<?php echo $thumbnail_id ?>" src="<?php echo esc_html(get_the_post_thumbnail_url(get_the_ID(),'full')) ?>" alt="<?php echo esc_html($alt)?>" title="<?php echo esc_html($caption)?>" width="100%"  sizes="(max-width: 820px) 100vw, 820px"><figcaption class="wp-caption-text"><?php echo esc_html($caption) ?></figcaption></figure>
+
+<?php }else{ ?>
+
+    <div class="post-gallery">
+        <?php the_post_thumbnail(); ?>
+        <?php $caption = get_post_meta(get_the_ID(), '_hotmagazine_caption', true); ?> 
+        <?php if(is_single()){ ?>  
+			<?php if($caption!=''){ ?>
+                <span class="image-caption"><?php echo esc_html($caption);?></span>   
+            <?php } ?>
+        <?php } ?>
+    </div>
+<?php } ?>
+<?php } ?>
+<?php }?>

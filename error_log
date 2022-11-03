@@ -1,0 +1,2 @@
+[12-Dec-2016 14:45:25 America/Mexico_City] PHP Fatal error:  Call to undefined function get_header() in /home/amtestco/public_html/imparcialoaxaca/wp-content/themes/hotmagazine/index.php on line 1
+[12-Jan-2017 12:18:34 America/Mexico_City] PHP Fatal error:  Call to undefined function get_header() in /home/amtestco/public_html/imparcialoaxaca/wp-content/themes/hotmagazine/index.php on line 1

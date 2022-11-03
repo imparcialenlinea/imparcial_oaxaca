@@ -1,0 +1,163 @@
+<?php 
+
+if ( ! defined( 'ABSPATH' ) ) {
+
+  die( '-1' );
+
+}
+
+
+/**
+
+ * Shortcode attributes
+
+ * @var $atts
+ * @var $grupo_slug 
+ * @var $this WPBakeryShortCode_qk_team
+
+ */
+
+$atts = vc_map_get_attributes( $this->getShortcode(), $atts );
+extract( $atts );
+$custom  = hotmagazine_custom();
+
+
+// This is where you run the code and display the output
+$queryhoy = array(	
+	'posts_per_page' =>1,
+	'post_type' => 'casoscovid',
+	'post_status' => 'publish',
+);
+
+
+$items = new WP_Query($queryhoy);
+$items->the_post();
+	$confirmadoshoy=rwmb_meta( 'confirmados' );
+	$sospechososhoy=rwmb_meta( 'sospechosos' );
+	$muertoshoy=rwmb_meta( 'muertos' );	
+	$dia=get_the_date('j');	
+	$mes=get_the_date('F');	
+	
+?>
+
+
+<style>
+.imgCOVID{
+	width:852px;
+	height:316px;
+	background-image:url(https://imparcialoaxaca.mx/wp-content/uploads/2020/07/covid-portada.jpg);
+	border:1px solid #999999;
+}
+.CVcorte{
+top: 287px;
+    left: 200px;
+    font-size: 14px;
+    width: 138px;
+    text-align: center;
+    position: absolute;
+    text-transform: uppercase;
+    color: #ffffff;
+    font-weight: 900;
+}
+.CVconfirmados{
+	top: 285px;
+    left: 390px;
+    font-size: 28px;
+    width: 123px;
+    text-align: center;
+    position: absolute;
+    color: #ffffff;
+    font-weight: 900;
+}
+.CVsospechosos{
+    top: 285px;
+    left: 513px;
+    font-size: 28px;
+    width: 123px;
+    text-align: center;
+    position: absolute;
+    color: #ffffff;
+    font-weight: 900;
+}
+.CVmuertes{
+    top: 285px;
+    left: 637px;
+    font-size: 28px;
+    width: 123px;
+    text-align: center;
+    position: absolute;
+    color: #ffffff;
+    font-weight: 900;
+}
+</style>
+
+    <script src= 
+"https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"> 
+    </script> 
+      
+    <script src= 
+"https://files.codepedia.info/files/uploads/iScripts/html2canvas.js"> 
+    </script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js" integrity="sha512-s/XK4vYVXTGeUSv4bRPOuxSDmDlTedEpMEcAQk0t/FMd9V6ft8iXdwSBxV0eD60c6w/tjotSlKu9J2AAW1ckTA==" crossorigin="anonymous"></script>
+
+
+<div class="imgCOVID" id="html-content-holder">
+	<div class="CVcorte">
+    	<?php echo $dia.' de '.$mes; ?>
+    </div>   
+	<div class="CVconfirmados">
+    	<?php echo number_format($confirmadoshoy, 0, '.', ','); ?>
+    </div>    
+	<div class="CVsospechosos">
+    	<?php echo number_format($sospechososhoy, 0, '.', ','); ?>
+    </div> 
+	<div class="CVmuertes">
+    	<?php echo number_format($muertoshoy, 0, '.', ','); ?>
+    </div>         
+</div>
+    <input id="btn-Preview-Image" type="button"
+                value="CREAR IMAGEN" />  
+          
+    <a id="btn-Convert-Html2Image" href="#"> 
+        DESCARGAR 
+    </a> 
+  
+    <br/> 
+      
+    <h3>IMAGEN:</h3> 
+      
+    <div id="previewImage"></div> 
+
+    <script> 
+        $(document).ready(function() { 
+          
+            // Global variable 
+            var element = $("#html-content-holder");  
+          
+            // Global variable 
+            var getCanvas;  
+  
+            $("#btn-Preview-Image").on('click', function() { 
+                html2canvas(element, { 
+                    onrendered: function(canvas) { 
+                        $("#previewImage").append(canvas); 
+                        getCanvas = canvas; 
+                    } 
+                }); 
+            }); 
+  
+            $("#btn-Convert-Html2Image").on('click', function() { 
+                var imgageData =  
+                    getCanvas.toDataURL("image/jpg"); 
+              
+                // Now browser starts downloading  
+                // it instead of just showing it 
+                var newData = imgageData.replace( 
+                /^data:image\/png/, "data:application/octet-stream"); 
+              
+                $("#btn-Convert-Html2Image").attr( 
+                "download", "Covid-19-Portada-<?php echo $dia.$mes; ?>.jpg").attr( 
+                "href", newData); 
+            }); 
+        }); 
+    </script> 
